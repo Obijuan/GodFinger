@@ -1,18 +1,54 @@
+//--------------------------------------------------------------
+//-- FingerServer: Controlling the servos from the PC
+//--------------------------------------------------------------
+//-- (c) Juan Gonzalez-Gomez (Obijuan), May-2013
+//-- GPL license
+//--------------------------------------------------------------
 #include <Servo.h> 
 
 //-- Only needed for the skymega board
 //-- If using arduino, it can be commented
 #include <skymega.h>
 
-//-- Definition for the frames
-#define FRAME_HEADER ':'
-#define FRAME_POS 'P'     //-- Position command
+//----------------------------------------------------------------
+//-- The communication with the PC is by the serial port (115200 bauds)
+//-- The FRAMES contains only ascii characters. The format is the 
+//-- following:
+//--
+//--   :sPa  , where 
+//--
+//--  : is the frame header
+//--  s is the servo number (1 - 8)
+//--  P is the position command
+//--  a is the angle (between -90 and 90)
+//--
+//-- The frame should finish one of the following characters:
+//--   space, cr or lf
+//--
+//--  Example:    :1P40   --> Move the servo 1 to 40 degrees
+//--              :2P-30  --> Move the servo 2 to -40 degrees
+//-----------------------------------------------------------------
 
-//-- Global variables
+//-- Definitions for the frames
+#define FRAME_HEADER ':'
+#define FRAME_POS    'P'     //-- Position command
+
+
+//---------- Global variables
 Servo s[8];     //-- Servos
 char s_index=0; //-- Servo index
 int ang = 0;    //-- Servo angle
-  
+
+//-- For reading the serial input
+char serial_char;
+
+//-- Buffer for storing the received commands
+#define BUFSIZE 8
+char buffer[BUFSIZE+1];
+int buflen = 0;
+
+bool cmd_ready=false; 
+
 void setup() 
 { 
   // Configure the skymega led
@@ -39,15 +75,7 @@ void setup()
   Serial.print("Ready!\n");
 } 
  
-//-- For reading the serial input
-char serial_char;
 
-//-- Buffer for storing the received commands
-#define BUFSIZE 8
-char buffer[BUFSIZE+1];
-int buflen = 0;
-
-bool cmd_ready=false; 
 
 void read_frame()
 {
@@ -109,10 +137,6 @@ void process_cmd()
   //-- Debug...
   Serial.print("CMD: ");
   Serial.print(buffer);
-  Serial.print("---\n");
-  
-  Serial.print("Servo: ");
-  Serial.print(s_index);
   Serial.print("---\n");
 }
 
