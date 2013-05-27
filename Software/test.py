@@ -5,6 +5,7 @@ import getopt
 import sys
 import serial
 from Servo import *
+from Finger import *
 
 # parse command line options
 try:
@@ -49,16 +50,17 @@ except serial.SerialException:
 #-- Mostrar el nombre del dispositivo
 print "Puerto serie abierto: {0}\n".format(s.name)
 
-#-- Move the servos to the initial pos
-s.write(":2P0 ")
-s.write(":4P0 ")
 
 #-- Create the servos to use
-s1 = Servo(s, 2);
-s2 = Servo(s, 4);
+#s1 = Servo(s, 2)
+#s2 = Servo(s, 4)
 
+f1 = Finger(s, 2, up = 68, down = 76)
+f2 = Finger(s, 4, up = 65, down = 74)
 
-
+#-- Put the fingers in the up position
+f1.up()
+f2.up()
 
 
 
