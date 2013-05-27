@@ -40,7 +40,7 @@ class Servo(object):
     frame = ":" + str(self.dir) + "P" + str(pos) + " "
     
     #-- Debug
-    print frame
+    #print frame
     
     #-- Send the frame
     self.sp.write(frame)
@@ -54,4 +54,15 @@ class Servo(object):
     #-- Store the current servo pos
     self._pos = pos
     
+  @property
+  def pos(self):
+    """Read the current servo pos"""
+    return self._pos
+
+  @pos.setter
+  def pos(self, value):
+    """Set the sero pos"""
+    self.set_pos(value)
+
+
     
