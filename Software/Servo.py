@@ -1,6 +1,15 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+#-----------------------------------------------------------------
+#-- Servo class
+#-- Juan Gonzalez-Gomez (obijuan).  May-2013
+#-----------------------------------------------------------------
+#-- Controlling the position of servos from the PC
+#-- The Arduino / skymega or another arduino compatible board
+#-- should have the firmware  FingerServer uploaded
+#-----------------------------------------------------------------
+
 import time
 
 #-- Servo angular speed, in deg/seg (Futaba 3003)
