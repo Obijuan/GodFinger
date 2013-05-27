@@ -6,6 +6,10 @@ import time
 #-- Servo angular speed, in deg/seg (Futaba 3003)
 ServoW = 260.0
 
+class IncorrectAngle():
+  pass
+
+
 class Servo(object):
   """Servo class. For accessing to all the Servos"""
   
@@ -23,9 +27,15 @@ class Servo(object):
   def set_pos(self, pos):
     """Set the angular servo pos. The pos is an integer number
        in the range [-90 ,90] """
-       
-    #-- TODO: check that pos in in the range [-90,90]   
-       
+    
+    #-- Check that the pos in the range [-90,90] 
+    if not (-90 <= pos <= 90): 
+      raise IncorrectAngle()
+      return
+    
+    #-- Convert the pos to an integer value
+    pos = int(round(pos))
+      
     #-- Build the frame   
     frame = ":" + str(self.dir) + "P" + str(pos) + " "
     
